@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#ffefcd">
+<meta name="theme-color" content="#fdf1d2">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Short & Sweet">
 <title>Short &amp; Sweet · Invoices</title>
@@ -12,8 +12,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..800,0..100,0..1&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#ffefcd; --card:#fff6e3; --card-2:#fffaf0; --field:#fffdf8;
-  --gold:#d3b162; --gold-2:#c7a567; --tan:#e5c68f; --line:#efd8a8;
+  --bg:#fdf1d2; --card:#fff6e3; --card-2:#fffaf0; --field:#fffdf8;
+  --gold:#d4b262; --gold-2:#c7a567; --tan:#e5c68f; --line:#efd8a8;
   --brown:#3a2117; --brown-2:#5b3a2a; --muted:#7a5b47; --danger:#a3402a;
   --radius:18px;
   --shadow:0 1px 0 rgba(58,33,23,.03),0 10px 30px -20px rgba(58,33,23,.45);
@@ -33,7 +33,7 @@ input,select,textarea{font:inherit;color:inherit;font-size:16px}
 svg.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
 
 /* ---------- top bar ---------- */
-.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:10px 16px;padding-top:calc(10px + env(safe-area-inset-top));background:rgba(255,239,205,.88);-webkit-backdrop-filter:saturate(1.4) blur(12px);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid transparent;transition:border-color .25s}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:10px 16px;padding-top:calc(10px + env(safe-area-inset-top));background:rgba(253,241,210,.9);-webkit-backdrop-filter:saturate(1.4) blur(12px);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid transparent;transition:border-color .25s}
 .topbar.scrolled{border-bottom-color:var(--line)}
 .brand{display:flex;align-items:center;gap:10px;min-width:0}
 .brand-logo{width:48px;height:45px;flex:none}
@@ -62,6 +62,10 @@ svg.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;str
 .hero h1{margin:0;font-weight:650;font-size:clamp(30px,7vw,40px);line-height:1.05}
 .swirl{display:block;width:170px;height:15px;margin:8px auto 0;color:var(--gold)}
 .hero p{margin:10px 0 0;font-weight:700;font-size:13.5px}
+.no-edit{border:0;background:none;padding:2px 10px;border-radius:14px;font:inherit;color:inherit;letter-spacing:inherit;display:inline-flex;align-items:center;gap:8px;transition:background .2s}
+.no-edit::after{content:"";width:18px;height:18px;flex:none;opacity:.55;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20h4L19 9l-4-4L4 16v4z'/%3E%3Cpath d='M13.5 6.5l4 4'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20h4L19 9l-4-4L4 16v4z'/%3E%3Cpath d='M13.5 6.5l4 4'/%3E%3C/svg%3E") center/contain no-repeat}
+.no-edit:hover{background:rgba(212,178,98,.18)}
+.no-input{width:6.5em;max-width:80%;font:inherit;font-variation-settings:inherit;letter-spacing:inherit;color:inherit;text-align:center;background:var(--field);border:1.5px solid var(--gold);border-radius:14px;padding:2px 8px;outline:none;box-shadow:0 0 0 4px rgba(211,177,98,.25)}
 .status{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:3px 10px;margin-top:10px;transition:background .3s,color .3s}
 .status i{width:7px;height:7px;border-radius:50%;background:var(--gold);transition:background .3s}
 .status.saved i{background:#6d8b4a}
@@ -340,7 +344,7 @@ textarea.input{height:auto;min-height:78px;padding:11px 13px;resize:vertical;lin
 <main class="layout">
   <div class="col-main">
     <div class="hero">
-      <h1 class="display" id="heroTitle">Invoice No. 0001</h1>
+      <h1 class="display"><button type="button" class="no-edit" id="heroTitle" title="Tap to change the invoice number">Invoice No. 0001</button><input class="no-input" id="heroNo" inputmode="numeric" autocomplete="off" aria-label="Invoice number" hidden></h1>
       <svg class="swirl" aria-hidden="true"><use href="#swirl"/></svg>
       <p>Choose your products. Pick your flavours.</p>
       <span class="status" id="heroStatus"><i></i><span>Draft</span></span>
@@ -553,7 +557,7 @@ const DEFAULTS = {
   },
   ranges: {main: {t1: '5–20 pcs', t2: '21+ pcs'}, small: {t1: '10–50 pcs', t2: '51+ pcs'}},
   defaultMode: 'b2c',
-  nextNumber: 2,
+  nextNumber: 1,
   delivery: 0,
   taxName: 'VAT', taxRate: 0, taxOnDelivery: true,
   dueText: 'Due upon receipt',
@@ -653,18 +657,18 @@ function touch() {
   persistTimer = setTimeout(() => persist(false), 700);
   refresh();
 }
+// Next number = highest saved invoice + 1 (0001 when there are none).
+function highestSaved() { return invoices.reduce((m, x) => /^\d+$/.test(String(x.number).trim()) ? Math.max(m, parseInt(x.number, 10)) : m, 0); }
+function syncNextNumber() { S.nextNumber = highestSaved() + 1; store.set(KEY.settings, S); }
 function persist(explicit) {
   clearTimeout(persistTimer);
   if (!explicit && !hasContent(inv)) return false;
   const copy = clone(inv); copy.persisted = true;
   const i = invoices.findIndex(x => x.id === inv.id);
   if (i >= 0) invoices[i] = copy; else invoices.unshift(copy);
-  if (!inv.persisted) {
-    inv.persisted = true;
-    const n = parseInt(inv.number, 10);
-    if (/^\d+$/.test(String(inv.number).trim()) && n >= S.nextNumber) { S.nextNumber = n + 1; store.set(KEY.settings, S); }
-  }
+  if (!inv.persisted) inv.persisted = true;
   store.set(KEY.invoices, invoices);
+  syncNextNumber();
   store.set(KEY.current, inv);
   updateStatus();
   return true;
@@ -924,6 +928,22 @@ function tween(el, to) {
     el.textContent = aed(Math.round(from + (to - from) * k)); if (p < 1) el._raf = requestAnimationFrame(step); };
   el._raf = requestAnimationFrame(step);
 }
+function editNumber() {
+  const t = $('#heroTitle'), i = $('#heroNo');
+  i.value = String(inv.number ?? '').trim(); t.hidden = true; i.hidden = false; i.focus(); i.select();
+}
+function finishNumber(save) {
+  const t = $('#heroTitle'), i = $('#heroNo'); if (i.hidden) return;
+  const v = i.value.trim();
+  if (save && v && v !== String(inv.number).trim()) {
+    inv.number = /^\d+$/.test(v) ? String(parseInt(v, 10)) : v;
+    fillBinds(); touch(); toast(`Invoice number changed to ${fmtNo(inv.number)}`);
+  }
+  i.hidden = true; t.hidden = false; updateStatus();
+}
+$('#heroTitle').addEventListener('click', editNumber);
+$('#heroNo').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); finishNumber(true); } else if (e.key === 'Escape') finishNumber(false); });
+$('#heroNo').addEventListener('blur', () => finishNumber(true));
 function updateStatus() {
   $('#heroTitle').textContent = 'Invoice No. ' + (fmtNo(inv.number) || '—');
   const st = $('#heroStatus');
@@ -1330,7 +1350,9 @@ $('#histList').addEventListener('click', e => {
   } else if (b.dataset.h === 'del') {
     if (!confirm(`Delete invoice No. ${fmtNo(x.number)}${x.recipient ? ' for ' + x.recipient : ''}? This can't be undone.`)) return;
     invoices = invoices.filter(v => v.id !== id); store.set(KEY.invoices, invoices);
+    syncNextNumber();
     if (inv.id === id) loadInvoice(newInvoice());
+    else if (!inv.persisted && !hasContent(inv)) { inv.number = String(S.nextNumber); store.set(KEY.current, inv); fillBinds(); updateStatus(); }
     renderHistory(); toast('Invoice deleted');
   }
 });
@@ -1457,6 +1479,7 @@ function renderAll() {
   renderLines(); syncPricing(); fillBinds(); updateStatus(); refresh();
 }
 addEventListener('scroll', () => $('#topbar').classList.toggle('scrolled', scrollY > 6), {passive: true});
+if (!invoices.length) { syncNextNumber(); if (!inv.persisted && !hasContent(inv)) { inv.number = String(S.nextNumber); store.set(KEY.current, inv); } }
 renderAll();
 </script>
 </body>
